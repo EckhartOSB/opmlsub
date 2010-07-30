@@ -1,0 +1,9 @@
+#!/bin/sh
+cd ~/.newspipe
+if opmlsub.rb sterling.opml -s `xclip -o` -i "Favorite Feeds" > sterling.opml.new 2> opmlsub.errs
+then
+  mv sterling.opml.new sterling.opml
+else
+  xmessage -file opmlsub.errs -center
+  rm sterling.opml.new opmlsub.errs
+fi

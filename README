@@ -1,0 +1,73 @@
+opmlsub.rb - script to add a feed to an OPML file
+
+Chip Camden, July 2010
+
+Three scripts:
+
+clipsub		Example of subscribing to a feed from the X clipboard
+feeds.rb	List the feeds discovered by site(s)
+opmlsub.rb	Add a feed to an OPML file
+
+---------------------
+
+clipsub - Subscribe to a feed whose URL is on the X clipboard
+
+This script is just an example of how you could  automate the process
+of subscribing to a feed when running on X windows.  You would need
+to change the name of the OPML file it contains and the name of the
+element where new feeds should be added (the -i option).
+
+Here's how it works.  I'm in Firefox, looking at a site to which I'd
+like to subscribe.  I press:
+
+1. ctrl+L	highlights the address bar
+2. ctrl+C	copies the URL to my clipboard
+3. mod4+shift+S	which is mapped as an xmonad shortcut to clipsub
+
+The clipsub script autodiscovers the first RSS 2.0 feed (or first ATOM feed,
+if there is no link for RSS) and adds it to my OPML file using opmlsub.rb.
+If an error occurs, a message window pops up.
+
+Alternately, if I have a link to the feed I want, I can just copy that
+to the clipboard and proceed to step 3.
+
+----------------------
+
+feeds.rb - List the feeds discovered by site(s)
+
+usage:  feeds.rb URL...
+
+This script lists all RSS 2.0 and ATOM feeds that are discovered on each
+of the URL arguments.
+
+Example:
+
+% feeds.rb http://chipsquips.com
+http://www.chipsquips.com/?feed=rss2
+http://www.chipsquips.com/?feed=atom
+
+----------------------
+
+opmlsub.rb - Add a feed toan OPML file
+
+usage: opmlsub.rb -s URL [-i TEXT] FILE...
+    -i, --inside TEXT                Text of OPML entry to add this to (default = top)
+    -s, --subscribe URL              URL of site to subscribe
+
+This script can read FILE arguments or from stdin, and sends the new output OPML to stdout.
+Exactly one URL must be specified, which is the URL to add.  This may be the URL of a feed, 
+or of an HTML page that discovers one or more feeds.  If the latter, then the first RSS 2.0
+feed link encountered will be used.  If no RSS 2.0 links are found, then the first ATOM link
+will be used instead.  If no links are discovered, an error occurs.
+
+If -i is specified, then TEXT is the value of the "text" attribute of the "outline" element
+in the OPML which will be the container for the new subscription.  If not found or not
+specified, then the new element will be at the topmost level (a direct child of the "body"
+element).
+
+Example:
+
+% opmlsub.rb myfeeds.opml -s http://chipsquips.com -i "Favorite Feeds"
+%
+
+END
