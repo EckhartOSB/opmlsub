@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'mechanize'
-require 'hpricot'
 require 'optparse'
 
 urls = ARGV
