@@ -49,12 +49,12 @@ if page.at("/html")
 end
 
 if channel = page.at("/rss/channel")	# RSS 2.0
-  link = channel.at("link").content  # doesn't work -- bug in Hpricot?
-  descr = channel.at("description").content
+  link = channel.at("link").content
+  descr = channel.at("description")
 else
   if channel = page.at("feed")		# ATOM
     link = channel.at("link")[:href]
-    descr = channel.at("subtitle").content
+    descr = channel.at("subtitle")
   else
     $stderr.puts "opmlsub.rb: #{feed} does not refer to an RSS 2.0 or ATOM feed"
     exit 3
@@ -62,7 +62,7 @@ else
 end
 
 title = channel.at("title").content
-descr.gsub! /[\n\r\v]/m , ' '
+descr = descr ? descr.content.gsub(/[\n\r\v]/m , ' '): ' '
 
 parent = opml.at("//outline[@text='#{options[:inside]}']") ||
   	 opml.at("//outline[@text='#{options[:inside]}']") ||
